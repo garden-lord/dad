@@ -55,19 +55,38 @@
   <body>
     <div id="container"></div>
     <script>
-      console.log(images);
-      const image = images[Math.floor(Math.random() * images.length)];
+      let last = null;
 
-      const main = document.createElement("img");
-      main.src = image;
-      main.id = "main";
+      function random() {
+        let candidate = images[Math.floor(Math.random() * images.length)];
+        while (last === candidate) {
+          candidate = images[Math.floor(Math.random() * images.length)];
+        }
+        last = candidate;
+        return candidate;
+      }
 
-      const background = document.createElement("img");
-      background.src = image;
-      background.id = "background";
+      function display() {
+        const container = document.getElementById("container");
+        container.innerHTML = "";
 
-      document.getElementById("container").appendChild(background);
-      document.getElementById("container").appendChild(main);
+        const image = random();
+        const main = document.createElement("img");
+        main.src = image;
+        main.id = "main";
+
+        const background = document.createElement("img");
+        background.src = image;
+        background.id = "background";
+
+        container.appendChild(background);
+        container.appendChild(main);
+      }
+
+      display();
+
+      window.addEventListener("touchstart", display);
+      window.addEventListener("mousedown", display);
     </script>
   </body>
 </html>
