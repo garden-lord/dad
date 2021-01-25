@@ -75,7 +75,12 @@
         return candidate;
       }
 
-      function display() {
+      function display(e) {
+        if (e) {
+          e.stopPropagation();
+        }
+
+
         const container = document.getElementById("container");
         container.innerHTML = "";
 
