@@ -12,6 +12,8 @@
         padding: 0;
         margin: 0;
 
+        touch-action: manipulation;
+
         position: absolute;
         top: 0;
         left: 0;
@@ -23,6 +25,13 @@
         justify-items: center;
         align-items: center;
         display: flex;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
 
       #main {
