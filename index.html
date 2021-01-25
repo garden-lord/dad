@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Draw a Bog dot Blog</title>
+    <link rel="icon" href="favicon.ico" />
+    <style>
+      #container {
+        padding: 0;
+        margin: 0;
+
+        width: 100vw;
+        height: 100vh;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        display: flex;
+      }
+
+      #main {
+        max-width: 80vw;
+        max-height: 80vh;
+        -webkit-box-shadow: 0px 0px 26px 0px #000000;
+        box-shadow: 0px 0px 35px 0px #000000;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      #background {
+        z-index: -999;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        filter: blur(40px);
+      }
+    </style>
+    <script src="images.js"></script>
+  </head>
+
+  <body>
+    <div id="container"></div>
+    <script>
+      console.log(images);
+      const image = images[Math.floor(Math.random() * images.length)];
+
+      const main = document.createElement("img");
+      main.src = image;
+      main.id = "main";
+
+      const background = document.createElement("img");
+      background.src = image;
+      background.id = "background";
+
+      document.getElementById("container").appendChild(background);
+      document.getElementById("container").appendChild(main);
+    </script>
+  </body>
+</html>
