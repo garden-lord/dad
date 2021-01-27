@@ -64,22 +64,35 @@
   <body>
     <div id="container"></div>
     <script>
-      let last = null;
+      function shuffle(array) {
+          for (var i = array.length - 1; i > 0; i--) {
+              var j = Math.floor(Math.random() * (i + 1));
+              var temp = array[i];
+              array[i] = array[j];
+              array[j] = temp;
+          }
+      }
+
+      function freshBag() {
+        let bag = Array.from(images);
+        shuffle(bag);
+        return bag;
+      }
+
+      let bag = freshBag();
 
       function random() {
-        let candidate = images[Math.floor(Math.random() * images.length)];
-        while (last === candidate) {
-          candidate = images[Math.floor(Math.random() * images.length)];
+        if (bag.length == 0) {
+          bag = freshBag();
         }
-        last = candidate;
-        return candidate;
+        
+        return bag.shift();
       }
 
       function display(e) {
         if (e) {
           e.stopPropagation();
         }
-
 
         const container = document.getElementById("container");
         container.innerHTML = "";
