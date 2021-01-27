@@ -1,5 +1,6 @@
 const images = [
-    "images/File_000.jpeg",
     "images/gamer.png",
-    "images/Untitled_Artwork.gif",
+    "images/rundog.png",
+    "images/sail.jpeg",
+    "images/skater.gif",
 ];
