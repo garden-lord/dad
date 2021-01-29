@@ -1,7 +1,7 @@
 import os
 from urllib import parse
 
-images = os.listdir("images")
+images = sorted(os.listdir("images"))
 
 print("const images = [")
 
