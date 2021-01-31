@@ -5,4 +5,5 @@ const images = [
     "images/rundog.webp",
     "images/sail.webp",
     "images/skater.webp",
+    "images/subway.webp",
 ];
