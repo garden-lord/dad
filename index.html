@@ -45,6 +45,7 @@
       body {
         padding: 0;
         margin: 0;
+        touch-action: manipulation;
       }
 
       #background {
@@ -66,12 +67,12 @@
     <div id="container"></div>
     <script>
       function shuffle(array) {
-          for (var i = array.length - 1; i > 0; i--) {
-              var j = Math.floor(Math.random() * (i + 1));
-              var temp = array[i];
-              array[i] = array[j];
-              array[j] = temp;
-          }
+        for (var i = array.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+        }
       }
 
       function freshBag() {
@@ -82,11 +83,15 @@
 
       let bag = freshBag();
 
+      function log(x) {
+        document.getElementById("log").innerText += "\n" + x;
+      }
+
       function random() {
         if (bag.length == 0) {
           bag = freshBag();
         }
-        
+
         return bag.shift();
       }
 
@@ -121,9 +126,25 @@
         window.preloadedImages.push(img);
       }
 
-      // window.addEventListener("click", display);
-      window.addEventListener("touchstart", display);
-      window.addEventListener("mousedown", display);
+      window.addEventListener("click", display);
+
+      const delta = 6;
+      let startX;
+      let startY;
+
+      window.addEventListener("touchstart", function (event) {
+        startX = event.pageX;
+        startY = event.pageY;
+      });
+
+      window.addEventListener("touchend", function (event) {
+        const diffX = Math.abs(event.pageX - startX);
+        const diffY = Math.abs(event.pageY - startY);
+
+        if (diffX < delta && diffY < delta) {
+          display();
+        }
+      });
     </script>
   </body>
 </html>
