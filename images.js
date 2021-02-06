@@ -1,4 +1,5 @@
 const images = [
+    "images/Window.webp",
     "images/boba.webp",
     "images/deal.webp",
     "images/gamer.webp",
