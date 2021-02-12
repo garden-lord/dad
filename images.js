@@ -4,6 +4,7 @@ const images = [
     "images/boba.webp",
     "images/cave.webp",
     "images/deal.webp",
+    "images/doctor.webp",
     "images/gamer.webp",
     "images/rundog.webp",
     "images/sail.webp",
