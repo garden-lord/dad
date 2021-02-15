@@ -50,6 +50,19 @@
       }
 
       #background {
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        filter: blur(20px);
+      }
+
+      .background-image {
         z-index: -999;
         position: absolute;
         top: 0;
@@ -58,8 +71,7 @@
         right: 0;
         width: 100%;
         height: 100%;
-        filter: blur(40px);
-        transform: scale(1.2);
+        filter: blur(0px);
       }
     </style>
     <script src="images.js"></script>
@@ -68,57 +80,93 @@
   <body>
     <div id="container"></div>
     <script>
-      function shuffle(array) {
-        for (var i = array.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
+      class Bag {
+        constructor(data) {
+          this.data = data;
+
+          this.bagIndex = 0;
+          this.currentBag = this.freshBag();
+          this.historicBag = [];
+        }
+
+        shuffle(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+          }
+        }
+
+        freshBag() {
+          let indices = [...Array(this.data.length).keys()];
+          this.shuffle(indices);
+          return indices;
+        }
+
+        next() {
+          this.bagIndex += 1;
+          if (this.bagIndex >= this.historicBag.length) {
+            this.historicBag.push(...this.freshBag());
+            console.log("rebagging");
+          }
+          let dataIndex = this.historicBag[this.bagIndex];
+          console.log(dataIndex, this.bagIndex, this.historicBag);
+          return this.data[dataIndex];
+        }
+
+        prev() {
+          this.bagIndex -= 1;
+          if (this.bagIndex < 0) {
+            Array.prototype.unshift.apply(this.historicBag, this.freshBag());
+            this.bagIndex = this.data.length - 1;
+          }
+          let dataIndex = this.historicBag[this.bagIndex];
+          console.log(dataIndex, this.bagIndex, this.historicBag);
+          return this.data[dataIndex];
         }
       }
 
-      function freshBag() {
-        let bag = Array.from(images);
-        shuffle(bag);
-        return bag;
-      }
+      const bag = new Bag(images);
 
-      let bag = freshBag();
-
-      function log(x) {
-        document.getElementById("log").innerText += "\n" + x;
-      }
-
-      function random() {
-        if (bag.length == 0) {
-          bag = freshBag();
-        }
-
-        return bag.shift();
-      }
-
-      function display(e) {
-        if (e) {
-          e.stopPropagation();
-        }
-
+      function display(image) {
         const container = document.getElementById("container");
         container.innerHTML = "";
 
-        const image = random();
         const main = document.createElement("img");
         main.src = image;
         main.id = "main";
-
-        const background = document.createElement("img");
-        background.src = image;
-        background.id = "background";
-
-        container.appendChild(background);
         container.appendChild(main);
+
+        const maxBlur = 20;
+        const n = 4;
+        for (let i = 0; i <= n; i++) {
+          const background = document.createElement("img");
+          background.src = image;
+          background.classList.add("background-image");
+          const blur = (i / n) * maxBlur;
+          background.style.filter = `blur(${blur}px)`;
+          container.appendChild(background);
+        }
       }
 
-      display();
+      function clickHandler(event) {
+        if (event) {
+          event.stopPropagation();
+        }
+        const vw = Math.max(
+          document.documentElement.clientWidth || 0,
+          window.innerWidth || 0
+        );
+
+        if (event.clientX > vw / 2) {
+          display(bag.next());
+        } else {
+          display(bag.prev());
+        }
+      }
+
+      display(bag.next());
 
       // Preload the rest of the images
       window.preloadedImages = [];
@@ -128,7 +176,7 @@
         window.preloadedImages.push(img);
       }
 
-      window.addEventListener("click", display);
+      window.addEventListener("click", clickHandler);
 
       const delta = 6;
       let startX;
@@ -144,7 +192,7 @@
         const diffY = Math.abs(event.pageY - startY);
 
         if (diffX < delta && diffY < delta) {
-          display();
+          clickHandler();
         }
       });
     </script>
