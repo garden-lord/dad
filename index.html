@@ -192,7 +192,8 @@
         const diffY = Math.abs(event.pageY - startY);
 
         if (diffX < delta && diffY < delta) {
-          clickHandler();
+          event.clientX = event.pageX;
+          clickHandler(event);
         }
       });
     </script>
