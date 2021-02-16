@@ -138,16 +138,11 @@
         main.id = "main";
         container.appendChild(main);
 
-        const maxBlur = 20;
-        const n = 4;
-        for (let i = 0; i <= n; i++) {
-          const background = document.createElement("img");
-          background.src = image;
-          background.classList.add("background-image");
-          const blur = (i / n) * maxBlur;
-          background.style.filter = `blur(${blur}px)`;
-          container.appendChild(background);
-        }
+        const background = document.createElement("img");
+        background.src = image;
+        background.classList.add("background-image");
+        background.style.filter = `blur(23px)`;
+        container.appendChild(background);
       }
 
       function clickHandler(event) {
