@@ -1,7 +1,7 @@
 const images = [
+    "images/Baker.webp",
     "images/Swim.webp",
     "images/Window.webp",
-    "images/baker.webp",
     "images/boba.webp",
     "images/cave.webp",
     "images/deal.webp",
