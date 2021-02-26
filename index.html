@@ -183,17 +183,20 @@
       window.addEventListener("click", clickHandler);
 
       const delta = 6;
+      let touching = false;
       let startX;
       let startY;
 
       window.addEventListener("touchstart", function (event) {
         startX = event.pageX;
         startY = event.pageY;
+        touching = true;
       });
 
       window.addEventListener("touchend", function (event) {
         const diffX = Math.abs(event.pageX - startX);
         const diffY = Math.abs(event.pageY - startY);
+        touching = false;
 
         if (diffX < delta && diffY < delta) {
           event.clientX = event.pageX;
@@ -202,8 +205,10 @@
       });
 
       function resize() {
-        document.body.style.width = visualViewport.width + "px";
-        document.body.style.height = visualViewport.height + "px";
+        if (!touching) {
+          document.body.style.width = visualViewport.width + "px";
+          document.body.style.height = visualViewport.height + "px";
+        }
       }
 
       window.addEventListener("resize", resize);
