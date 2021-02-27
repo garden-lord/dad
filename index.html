@@ -137,18 +137,21 @@
       const bag = new Bag(images);
 
       function display(image) {
-        document.body.innerHTML = "";
-
         const main = document.createElement("img");
         main.src = image;
         main.id = "main";
-        document.body.appendChild(main);
 
         const background = document.createElement("img");
         background.src = image;
         background.classList.add("background-image");
         background.style.filter = `blur(23px)`;
-        document.body.appendChild(background);
+
+        background.addEventListener("load", () => {
+          console.log("imager laoded");
+          document.body.innerHTML = "";
+          document.body.appendChild(main);
+          document.body.appendChild(background);
+        });
       }
 
       function clickHandler(event) {
