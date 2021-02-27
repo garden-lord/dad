@@ -8,7 +8,7 @@
     <title>Draw a Bog dot Blog</title>
     <link rel="icon" href="favicon.ico" />
     <style>
-      #container {
+      /* #container {
         padding: 0;
         margin: 0;
 
@@ -23,7 +23,7 @@
         justify-items: center;
         align-items: center;
         display: flex;
-      }
+      } */
 
       #main {
         max-width: 80%;
@@ -54,7 +54,7 @@
       .background-image {
         grid-column: 1;
         grid-row: 1;
-        z-index: -999;
+        /* z-index: -999; */
         position: fixed;
         transform: scale(1.4);
         width: 100%;
@@ -113,10 +113,8 @@
           this.bagIndex += 1;
           if (this.bagIndex >= this.historicBag.length) {
             this.historicBag.push(...this.freshBag());
-            console.log("rebagging");
           }
           let dataIndex = this.historicBag[this.bagIndex];
-          console.log(dataIndex, this.bagIndex, this.historicBag);
           return this.data[dataIndex];
         }
 
@@ -134,7 +132,30 @@
 
       const bag = new Bag(images);
 
-      function display(image) {
+      function timeout(callback, delay) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            callback();
+            resolve();
+          }, delay);
+        });
+      }
+
+      timeout(() => {
+        console.log("meow");
+      }, 2000)
+        .then(() => {
+          return new timeout(() => {
+            console.log("a");
+          }, 2000);
+        })
+        .then(() => {
+          return new timeout(() => {
+            console.log("acc");
+          }, 2000);
+        });
+
+      function display(image, first) {
         const main = document.createElement("img");
         main.src = image;
         main.id = "main";
@@ -145,10 +166,46 @@
         background.style.filter = `blur(23px)`;
 
         background.addEventListener("load", () => {
-          console.log("imager laoded");
-          document.body.innerHTML = "";
-          document.body.appendChild(main);
-          document.body.appendChild(background);
+          if (first) {
+            document.body.appendChild(background);
+            document.body.appendChild(main);
+          } else {
+            // main.style.transition = "transform .2s, opacity .2s";
+            // background.style.transition = "transform .2s, opacity .2s";
+            main.style.transition = "transform .2s, opacity .2s";
+            background.style.transition = "transform .2s, opacity .2s";
+
+            main.style.transform = "translateX(100%)";
+            background.style.transform = "translateX(100%)";
+            main.style.opacity = 1;
+            background.style.opacity = 1;
+            document.body.appendChild(background);
+            document.body.appendChild(main);
+
+            timeout(() => {
+              // Initiate slide in from right
+              main.style.transform = "";
+              background.style.transform = "";
+            }, 1)
+              .then(() => {
+                // Once the slide in is done, fade out the old one
+                return timeout(() => {
+                  document.body.children[0].style.opacity = 0;
+                  document.body.children[1].style.opacity = 0;
+                }, 200);
+              })
+              .then(() => {
+                // Once fade out is done, remove the nodes
+                return timeout(() => {
+                  document.body.children[0].parentNode.removeChild(
+                    document.body.children[0]
+                  );
+                  document.body.children[0].parentNode.removeChild(
+                    document.body.children[0]
+                  );
+                }, 200);
+              });
+          }
         });
       }
 
@@ -170,7 +227,7 @@
 
       window.addEventListener("DOMContentLoaded", () => {
         resize();
-        display(bag.next());
+        display(bag.next(), true);
       });
 
       // Preload the rest of the images
