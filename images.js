@@ -2,6 +2,7 @@ const images = [
     "images/Baker.webp",
     "images/Beach.webp",
     "images/Blue_Collar.webp",
+    "images/Dog_Bicycle.webp",
     "images/Matrix.webp",
     "images/Swim.webp",
     "images/Window.webp",
